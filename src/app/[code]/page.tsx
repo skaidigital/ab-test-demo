@@ -2,6 +2,7 @@
 
 import { StarIcon } from "lucide-react";
 import { DiscoverRandomButton } from "@/components/discover-random-button";
+import { PromotionalBanner } from "@/components/promotional-banner";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -30,9 +31,10 @@ export default async function Home({
 
   return (
     <div className="min-h-screen bg-background">
+      {abTestIsActive && <PromotionalBanner />}
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         <div className="text-center my-12">
-          <h2 className="text-3xl font-bold mb-2">Featured Products</h2>
+          <h2 className="text-3xl  mb-2">Featured Products</h2>
           {abTestIsActive && <Badge variant="secondary">AB Test Active</Badge>}
           <p className="text-lg text-muted-foreground">
             Discover amazing products at great prices
@@ -71,7 +73,7 @@ export default async function Home({
                   </span>
                 </div>
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="text-2xl font-bold text-primary">
+                  <span className="text-2xl  text-primary">
                     ${(product?.price || 0).toFixed(2)}
                   </span>
                   {product?.originalPrice && (

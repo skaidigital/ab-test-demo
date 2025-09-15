@@ -23,7 +23,7 @@ export function ProductHeroControl({
           style={{ backgroundColor: product.color }}
         >
           <div className="text-center text-white">
-            <div className="text-6xl font-bold opacity-20 mb-2">
+            <div className="text-6xl  opacity-20 mb-2">
               {product.name.charAt(0)}
             </div>
             <div className="text-sm opacity-75">Product Image</div>
@@ -54,7 +54,7 @@ export function ProductHeroControl({
             )}
           </div>
 
-          <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+          <h1 className="text-3xl  mb-2">{product.name}</h1>
           <p className="text-muted-foreground text-lg">{product.description}</p>
         </div>
 
@@ -83,7 +83,7 @@ export function ProductHeroControl({
 
         {/* Price */}
         <div className="flex items-center gap-3">
-          <span className="text-3xl font-bold text-primary">
+          <span className="text-3xl  text-primary">
             ${product.price.toFixed(2)}
           </span>
           {isOnSale && (

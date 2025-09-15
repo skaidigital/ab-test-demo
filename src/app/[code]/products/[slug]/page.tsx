@@ -76,7 +76,7 @@ export default async function ProductPage({
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold mb-3">Description</h3>
+            <h3 className="text-lg  mb-3">Description</h3>
             <p className="text-muted-foreground leading-relaxed">
               {product.longDescription}
             </p>
@@ -85,7 +85,7 @@ export default async function ProductPage({
           <Separator />
 
           <div>
-            <h3 className="text-lg font-semibold mb-3">Key Features</h3>
+            <h3 className="text-lg  mb-3">Key Features</h3>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {product.features.map((feature, index) => (
                 <li key={index} className="flex items-center gap-2">
@@ -99,14 +99,14 @@ export default async function ProductPage({
           <Separator />
 
           <div>
-            <h3 className="text-lg font-semibold mb-3">Specifications</h3>
+            <h3 className="text-lg  mb-3">Specifications</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(product.specifications).map(([key, value]) => (
                 <div
                   key={key}
                   className="flex justify-between py-2 border-b border-muted"
                 >
-                  <span className="font-medium text-sm">{key}</span>
+                  <span className=" text-sm">{key}</span>
                   <span className="text-muted-foreground text-sm">{value}</span>
                 </div>
               ))}
@@ -131,9 +131,7 @@ export default async function ProductPage({
                 </Avatar>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-sm">
-                      Customer {index + 1}
-                    </span>
+                    <span className=" text-sm">Customer {index + 1}</span>
                     <div className="flex">
                       {Array.from({ length: 5 }).map((_, starIndex) => (
                         <svg

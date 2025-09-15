@@ -2,8 +2,9 @@ import { encryptFlagValues } from "flags";
 import { deserialize, generatePermutations } from "flags/next";
 import { FlagValues } from "flags/react";
 import { DevTools } from "@/components/dev-tools";
+import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
-import { flags } from "@/features/ab-test/flags";
+import { flags, showTestVariant } from "@/features/ab-test/flags";
 import { getDefaultCode } from "@/features/ab-test/get-default-code";
 import { AB_TEST_CONFIG } from "@/lib/constants";
 
@@ -28,11 +29,13 @@ export default async function Layout({
   const { code } = await params;
   const values = await deserialize(flags, code);
   const encryptedFlagValues = await encryptFlagValues(values);
+  const abTestIsActive = await showTestVariant(code, flags);
 
   return (
     <>
-      <Navbar />
+      <Navbar abTestIsActive={abTestIsActive} />
       {children}
+      <Footer />
       <FlagValues values={encryptedFlagValues} />
       <DevTools />
     </>

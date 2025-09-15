@@ -7,10 +7,5 @@ export const COOKIES = {
 };
 
 export const AB_TEST_CONFIG = {
-  ENABLED: false,
+  ENABLED: true,
 };
-
-/**
- * The default code to use when the AB test is not enabled.
- */
-export const DEFAULT_CODE = "default";
