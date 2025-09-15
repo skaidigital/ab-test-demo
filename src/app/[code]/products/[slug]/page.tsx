@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { Product } from "@/data/products";
+import { getProductBySlug } from "@/data/products";
 import { flags, showTestVariant } from "@/features/ab-test/flags";
 
 export default async function ProductPage({
@@ -24,19 +24,11 @@ export default async function ProductPage({
 }) {
   const { code, slug } = await params;
 
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/products/${slug}`;
+  const product = getProductBySlug(slug);
 
-  const response = await fetch(url, {
-    headers: {
-      "Cache-Control": "max-age=300, stale-while-revalidate=3600",
-    },
-  });
-
-  if (!response.ok) {
+  if (!product) {
     notFound();
   }
-
-  const product: Product = await response.json();
 
   const isOnSale =
     product.originalPrice !== undefined &&
