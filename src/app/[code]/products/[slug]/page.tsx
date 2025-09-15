@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: yolo */
 
-import { unstable_noStore as noStore } from "next/cache";
 import { notFound } from "next/navigation";
 import { ProductHeroControl } from "@/components/product-hero-control";
 import { ProductHeroTest } from "@/components/product-hero-test";
@@ -16,17 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import type { Product } from "@/data/products";
-import { flags, showTestVariant } from "@/flags";
-
-export const revalidate = 900;
-
-// export async function generateStaticParams() {
-//   const { products } = await import("@/data/products");
-
-//   return products.map((product) => ({
-//     slug: product.slug,
-//   }));
-// }
+import { flags, showTestVariant } from "@/features/ab-test/flags";
 
 export default async function ProductPage({
   params,

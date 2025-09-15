@@ -3,18 +3,18 @@ import { deserialize, generatePermutations } from "flags/next";
 import { FlagValues } from "flags/react";
 import { DevTools } from "@/components/dev-tools";
 import { Navbar } from "@/components/navbar";
-import { flags } from "@/flags";
+import { flags } from "@/features/ab-test/flags";
+import { getDefaultCode } from "@/features/ab-test/get-default-code";
+import { AB_TEST_CONFIG } from "@/lib/constants";
 
 export async function generateStaticParams() {
-  // Returning an empty array here is important as it enables ISR, so
-  // the various combinations stay cached after they first time they were rendered.
-  //
-  // return [];
+  if (!AB_TEST_CONFIG.ENABLED) {
+    const defaultCode = await getDefaultCode();
 
-  // Instead of returning an empty array you could also call generatePermutations
-  // to generate the permutations upfront.
+    return [{ code: defaultCode }];
+  }
+
   const codes = await generatePermutations(flags);
-  console.log("codes", codes);
   return codes.map((code) => ({ code }));
 }
 

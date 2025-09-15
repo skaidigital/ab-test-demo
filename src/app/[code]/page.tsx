@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getRandomProduct } from "@/data/products";
-import { flags, showTestVariant } from "@/flags";
+import { flags, showTestVariant } from "@/features/ab-test/flags";
 
 export default async function Home({
   params,

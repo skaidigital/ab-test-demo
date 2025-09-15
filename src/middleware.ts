@@ -1,29 +1,16 @@
-import { precompute } from "flags/next";
-import { type NextRequest, NextResponse } from "next/server";
-import { getStableId } from "@/features/ab-test/get-stable-id";
-import { flags } from "@/flags";
-import { COOKIES, HEADERS } from "@/lib/constants";
+import type { NextRequest } from "next/server";
+import {
+  activeABTestMiddleware,
+  inactiveABTestMiddleware,
+} from "@/features/ab-test/middleware";
+import { AB_TEST_CONFIG } from "@/lib/constants";
 
 export async function middleware(request: NextRequest) {
-  const stableId = await getStableId();
-  console.log("stableId", stableId);
-
-  const code = await precompute(flags);
-
-  // rewrites the request to the variant for this flag combination
-  const nextUrl = new URL(
-    `/${code}${request.nextUrl.pathname}${request.nextUrl.search}`,
-    request.url,
-  );
-
-  if (stableId.isFresh) {
-    request.headers.set(HEADERS.STABLE_ID, stableId.value);
+  if (!AB_TEST_CONFIG.ENABLED) {
+    return inactiveABTestMiddleware(request);
   }
 
-  // response headers
-  const headers = new Headers();
-  headers.append("set-cookie", `${COOKIES.STABLE_ID}=${stableId.value}`);
-  return NextResponse.rewrite(nextUrl, { request, headers });
+  return await activeABTestMiddleware(request);
 }
 
 export const config = {
