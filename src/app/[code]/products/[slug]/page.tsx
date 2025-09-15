@@ -1,3 +1,6 @@
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: yolo */
+
+import { unstable_noStore as noStore } from "next/cache";
 import { notFound } from "next/navigation";
 import { ProductHeroControl } from "@/components/product-hero-control";
 import { ProductHeroTest } from "@/components/product-hero-test";
@@ -12,12 +15,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  getProductBySlug,
-  getRandomProduct,
-  type Product,
-} from "@/data/products";
+import type { Product } from "@/data/products";
 import { flags, showTestVariant } from "@/flags";
+
+export const revalidate = 900;
+
+// export async function generateStaticParams() {
+//   const { products } = await import("@/data/products");
+
+//   return products.map((product) => ({
+//     slug: product.slug,
+//   }));
+// }
 
 export default async function ProductPage({
   params,
@@ -26,15 +35,19 @@ export default async function ProductPage({
 }) {
   const { code, slug } = await params;
 
-  let product: Product | undefined = getProductBySlug(slug);
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/products/${slug}`;
 
-  if (!product) {
-    product = getRandomProduct();
-  }
+  const response = await fetch(url, {
+    headers: {
+      "Cache-Control": "max-age=300, stale-while-revalidate=3600",
+    },
+  });
 
-  if (!product) {
+  if (!response.ok) {
     notFound();
   }
+
+  const product: Product = await response.json();
 
   const isOnSale =
     product.originalPrice !== undefined &&
@@ -86,10 +99,7 @@ export default async function ProductPage({
             <h3 className="text-lg font-semibold mb-3">Key Features</h3>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {product.features.map((feature, index) => (
-                <li
-                  key={`feature-${product.id}-${index}`}
-                  className="flex items-center gap-2"
-                >
+                <li key={index} className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
                   <span className="text-sm">{feature}</span>
                 </li>

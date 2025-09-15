@@ -6,6 +6,7 @@ import { COOKIES, HEADERS } from "@/lib/constants";
 
 export async function middleware(request: NextRequest) {
   const stableId = await getStableId();
+  console.log("stableId", stableId);
 
   const code = await precompute(flags);
 

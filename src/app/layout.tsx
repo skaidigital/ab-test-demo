@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 
+export const dynamic = "error";
+
 import "./globals.css";
 
 export const metadata: Metadata = {

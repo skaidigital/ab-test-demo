@@ -14,6 +14,7 @@ export async function generateStaticParams() {
   // Instead of returning an empty array you could also call generatePermutations
   // to generate the permutations upfront.
   const codes = await generatePermutations(flags);
+  console.log("codes", codes);
   return codes.map((code) => ({ code }));
 }
 
