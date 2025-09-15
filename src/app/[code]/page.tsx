@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getRandomProduct } from "@/data/products";
-import { flags, showTestVariant } from "@/flags";
+import { flags, hasAbTestVariant } from "@/flags";
 
 export default async function Home({
   params,
@@ -18,7 +18,8 @@ export default async function Home({
 }) {
   const { code } = await params;
 
-  const abTestIsActive = await showTestVariant(code, flags);
+  const abTestIsActive = await hasAbTestVariant(code, flags);
+  console.log("abTestIsActive", abTestIsActive);
 
   const featuredProducts = [
     getRandomProduct(),
@@ -38,9 +39,10 @@ export default async function Home({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {featuredProducts.map((product) => (
+          {featuredProducts.map((product, index) => (
             <Card
-              key={product?.id}
+              // biome-ignore lint/suspicious/noArrayIndexKey: yolo
+              key={index}
               className="group hover:shadow-lg transition-shadow"
             >
               <CardHeader>

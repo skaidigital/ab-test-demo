@@ -1,8 +1,9 @@
-/** biome-ignore-all lint/style/noNonNullAssertion: Vercel did it so can I too */
+/** biome-ignore-all lint/style/noNonNullAssertion: yolo */
 
-import { flag } from "flags/next";
+import type { ReadonlyHeaders, ReadonlyRequestCookies } from "flags";
+import { dedupe, flag } from "flags/next";
 import { xxHash32 } from "js-xxhash";
-import { type EvaluationContext, identify } from "@/features/ab-test/identify";
+import { getOrGenerateVisitorId } from "@/features/ab-test/get-or-generate-visitor-id";
 
 /**
  * Takes a string and puts it into a bucket.
@@ -21,15 +22,31 @@ function bucket(key: string, buckets: number = 2) {
   return hashNum % buckets;
 }
 
-export const showTestVariant = flag<boolean, EvaluationContext>({
-  key: "show-test-variant",
-  description: "Shows the test variant",
-  defaultValue: false,
+interface Entities {
+  visitor?: { id: string };
+}
+
+const identify = dedupe(
+  async ({
+    cookies,
+    headers,
+  }: {
+    cookies: ReadonlyRequestCookies;
+    headers: ReadonlyHeaders;
+  }): Promise<Entities> => {
+    const visitorId = await getOrGenerateVisitorId(cookies, headers);
+    return { visitor: visitorId ? { id: visitorId } : undefined };
+  },
+);
+
+export const hasAbTestVariant = flag<boolean, Entities>({
+  key: "has-ab-test-variant",
   identify,
+  description: "Has AB Test Variant",
   decide({ entities }) {
-    if (!entities || !entities.stableId) return this.defaultValue!;
-    return bucket(`${this.key}/${entities.stableId}`) === 1;
+    if (!entities || !entities.visitor) return this.defaultValue!;
+    return bucket(`${this.key}/${entities.visitor.id}`) === 1;
   },
 });
 
-export const flags = [showTestVariant] as const;
+export const flags = [hasAbTestVariant];

@@ -1,27 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { COOKIES } from "@/lib/constants";
 
 export function DevTools() {
-  const router = useRouter();
-
-  const deleteCookie = () => {
-    // biome-ignore lint/suspicious/noDocumentCookie: Vercel did it so can I too
-    document.cookie = `${COOKIES.STABLE_ID}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    router.refresh();
-  };
-
   return (
-    <div className="fixed bottom-2 right-2 p-3 bg-[#333333] rounded shadow-lg z-50 flex flex-col gap-2">
-      <span className="text-white font-mono text-xs">Dev Tools</span>
-      <button
+    <div className="fixed bottom-4 right-4">
+      <Button
         type="button"
-        className="bg-white text-black font-mono text-xs rounded px-2 py-1 flex items-center gap-2 cursor-pointer hover:bg-gray-200 transition-colors active:bg-gray-300"
-        onClick={deleteCookie}
+        onClick={() => {
+          // biome-ignore lint/suspicious/noDocumentCookie: Vercel did it so can I too
+          document.cookie = `${COOKIES.VISITOR_ID}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+          window.location.reload();
+        }}
+        variant="outline"
       >
-        Reset Stable ID
-      </button>
+        Regenerate random visitor id
+      </Button>
     </div>
   );
 }

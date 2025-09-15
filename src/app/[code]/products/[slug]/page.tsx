@@ -17,7 +17,7 @@ import {
   getRandomProduct,
   type Product,
 } from "@/data/products";
-import { flags, showTestVariant } from "@/flags";
+import { flags, hasAbTestVariant } from "@/flags";
 
 export default async function ProductPage({
   params,
@@ -47,7 +47,7 @@ export default async function ProductPage({
         )
       : 0;
 
-  const abTestIsActive = await showTestVariant(code, flags);
+  const abTestIsActive = await hasAbTestVariant(code, flags);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">

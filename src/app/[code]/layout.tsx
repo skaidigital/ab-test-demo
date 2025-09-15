@@ -5,16 +5,13 @@ import { DevTools } from "@/components/dev-tools";
 import { Navbar } from "@/components/navbar";
 import { flags } from "@/flags";
 
-export async function generateStaticParams() {
-  // Returning an empty array here is important as it enables ISR, so
-  // the various combinations stay cached after they first time they were rendered.
-  //
-  // return [];
+// Ensure the page is static
+export const dynamic = "error";
 
-  // Instead of returning an empty array you could also call generatePermutations
-  // to generate the permutations upfront.
-  const codes = await generatePermutations(flags);
-  return codes.map((code) => ({ code }));
+// Generate all permutations (all combinations of flag 1 and flag 2).
+export async function generateStaticParams() {
+  const permutations = await generatePermutations(flags);
+  return permutations.map((code) => ({ code }));
 }
 
 export default async function Layout({
