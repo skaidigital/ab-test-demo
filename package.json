@@ -8,7 +8,9 @@
     "clean": "rm -rf .next node_modules && bun install",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "env:prod": "vercel env pull --environment=production",
+    "env:dev": "vercel env pull"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
