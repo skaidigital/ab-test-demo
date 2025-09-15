@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { Navbar } from "@/components/navbar";
 
 // export function generateStaticParams() {
@@ -7,9 +6,9 @@ import { Navbar } from "@/components/navbar";
 
 export default async function Layout({
   children,
-}: {
-  children: Readonly<ReactNode>;
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <>
       <Navbar />

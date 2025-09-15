@@ -16,23 +16,15 @@ import {
   getProductBySlug,
   getRandomProduct,
   type Product,
-  products,
 } from "@/data/products";
 import type { AbCode } from "@/features/ab-test/types";
 import { productFlags, showTestVariant } from "@/flags";
 
-interface ProductPageProps {
+export default async function ProductPage({
+  params,
+}: {
   params: Promise<{ code: AbCode; slug: string }>;
-}
-
-export function generateStaticParams() {
-  const slugs = products.map((p) => p.slug);
-  return (["control", "test"] as const).flatMap((code) =>
-    slugs.map((slug) => ({ code, slug })),
-  );
-}
-
-export default async function ProductPage({ params }: ProductPageProps) {
+}) {
   const { code, slug } = await params;
 
   let product: Product | undefined = getProductBySlug(slug);
