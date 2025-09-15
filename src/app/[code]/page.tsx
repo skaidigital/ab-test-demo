@@ -9,17 +9,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getRandomProduct } from "@/data/products";
-import type { AbCode } from "@/features/ab-test/types";
-import { productFlags, showTestVariant } from "@/flags";
+import { flags, showTestVariant } from "@/flags";
 
 export default async function Home({
   params,
 }: {
-  params: Promise<{ code: AbCode }>;
+  params: Promise<{ code: string }>;
 }) {
   const { code } = await params;
 
-  const abTestIsActive = await showTestVariant(code, productFlags);
+  const abTestIsActive = await showTestVariant(code, flags);
 
   const featuredProducts = [
     getRandomProduct(),

@@ -17,13 +17,12 @@ import {
   getRandomProduct,
   type Product,
 } from "@/data/products";
-import type { AbCode } from "@/features/ab-test/types";
-import { productFlags, showTestVariant } from "@/flags";
+import { flags, showTestVariant } from "@/flags";
 
 export default async function ProductPage({
   params,
 }: {
-  params: Promise<{ code: AbCode; slug: string }>;
+  params: Promise<{ code: string; slug: string }>;
 }) {
   const { code, slug } = await params;
 
@@ -48,7 +47,7 @@ export default async function ProductPage({
         )
       : 0;
 
-  const abTestIsActive = await showTestVariant(code, productFlags);
+  const abTestIsActive = await showTestVariant(code, flags);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">

@@ -32,4 +32,4 @@ export const showTestVariant = flag<boolean, EvaluationContext>({
   },
 });
 
-export const productFlags = [showTestVariant] as const;
+export const flags = [showTestVariant] as const;
